@@ -1,0 +1,32 @@
+﻿trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Instalar .NET SDK 9'
+  inputs:
+    packageType: 'sdk'
+    version: '9.x'
+
+- script: dotnet restore
+  displayName: 'Restaurar dependencias'
+
+- script: dotnet build --configuration $(buildConfiguration) --no-restore
+  displayName: 'Compilar aplicación'
+
+- script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+  displayName: 'Publicar aplicación'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publicar artefacto'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+    publishLocation: 'Container'
