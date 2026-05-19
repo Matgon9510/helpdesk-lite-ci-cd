@@ -1,0 +1,32 @@
+﻿@page
+@model HelpDeskLite.Pages.Tickets.CreateModel
+
+@{
+    ViewData["Title"] = "Crear ticket";
+}
+
+<h1>Crear ticket de soporte</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Título</label>
+        <input asp-for="Ticket.Titulo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Descripción</label>
+        <textarea asp-for="Ticket.Descripcion" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Prioridad</label>
+        <select asp-for="Ticket.Prioridad" class="form-select">
+            <option>Baja</option>
+            <option>Media</option>
+            <option>Alta</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a class="btn btn-secondary" asp-page="/Tickets/Index">Volver</a>
+</form>

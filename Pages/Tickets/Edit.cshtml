@@ -1,0 +1,61 @@
+﻿@page "{id:int?}"
+@model HelpDeskLite.Pages.Tickets.EditModel
+
+@{
+    ViewData["Title"] = "Editar ticket";
+}
+
+<h1>Editar ticket</h1>
+
+<h4>Información del ticket</h4>
+<hr />
+
+<form method="post">
+    <input type="hidden" asp-for="Ticket.Id" />
+
+    <div class="mb-3">
+        <label asp-for="Ticket.Titulo" class="form-label"></label>
+        <input asp-for="Ticket.Titulo" class="form-control" />
+        <span asp-validation-for="Ticket.Titulo" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Ticket.Descripcion" class="form-label"></label>
+        <textarea asp-for="Ticket.Descripcion" class="form-control"></textarea>
+        <span asp-validation-for="Ticket.Descripcion" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Ticket.Prioridad" class="form-label"></label>
+        <select asp-for="Ticket.Prioridad" class="form-select">
+            <option value="Baja">Baja</option>
+            <option value="Media">Media</option>
+            <option value="Alta">Alta</option>
+        </select>
+        <span asp-validation-for="Ticket.Prioridad" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Ticket.Estado" class="form-label"></label>
+        <select asp-for="Ticket.Estado" class="form-select">
+            <option value="Abierto">Abierto</option>
+            <option value="En proceso">En proceso</option>
+            <option value="Cerrado">Cerrado</option>
+        </select>
+        <span asp-validation-for="Ticket.Estado" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Fecha de creación</label>
+        <input value="@Model.Ticket.FechaCreacion.ToString("dd/MM/yyyy HH:mm")" class="form-control" readonly />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a asp-page="./Index" class="btn btn-secondary">Volver</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

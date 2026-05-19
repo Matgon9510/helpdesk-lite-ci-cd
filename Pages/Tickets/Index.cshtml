@@ -1,0 +1,63 @@
+﻿@page
+@model HelpDeskLite.Pages.Tickets.IndexModel
+
+@{
+    ViewData["Title"] = "Tickets de soporte";
+}
+
+<h1>Tickets de soporte</h1>
+
+<p>
+    <a class="btn btn-primary" asp-page="/Tickets/Create">Crear nuevo ticket</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Prioridad</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Cambiar estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var ticket in Model.Tickets)
+        {
+            <tr>
+                <td>@ticket.Id</td>
+                <td>@ticket.Titulo</td>
+                <td>@ticket.Descripcion</td>
+                <td>@ticket.Prioridad</td>
+                <td>@ticket.Estado</td>
+                <td>@ticket.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td>
+
+                <td>
+                    <form method="post" asp-page-handler="CambiarEstado">
+                        <input type="hidden" name="id" value="@ticket.Id" />
+
+                        <select name="estado" class="form-select">
+                            <option value="Abierto">Abierto</option>
+                            <option value="En proceso">En proceso</option>
+                            <option value="Cerrado">Cerrado</option>
+                        </select>
+
+                        <button type="submit" class="btn btn-sm btn-success mt-1">
+                            Actualizar
+                        </button>
+                    </form>
+                </td>
+
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@ticket.Id" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-page="./Details" asp-route-id="@ticket.Id" class="btn btn-sm btn-info">Detalles</a>
+                    <a asp-page="./Delete" asp-route-id="@ticket.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

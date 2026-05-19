@@ -1,0 +1,59 @@
+﻿@page
+@model HelpDeskLite.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-5">HelpDeskLite</h1>
+    <p class="lead">Sistema básico para la gestión de tickets de soporte técnico.</p>
+</div>
+
+<div class="row text-center">
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total tickets</h5>
+                <h2>@Model.TotalTickets</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm border-primary">
+            <div class="card-body">
+                <h5 class="card-title">Abiertos</h5>
+                <h2>@Model.TicketsAbiertos</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm border-warning">
+            <div class="card-body">
+                <h5 class="card-title">En proceso</h5>
+                <h2>@Model.TicketsEnProceso</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm border-success">
+            <div class="card-body">
+                <h5 class="card-title">Cerrados</h5>
+                <h2>@Model.TicketsCerrados</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 text-center">
+    <a class="btn btn-primary btn-lg" asp-page="/Tickets/Index">
+        Ver tickets
+    </a>
+
+    <a class="btn btn-success btn-lg" asp-page="/Tickets/Create">
+        Crear ticket
+    </a>
+</div>
