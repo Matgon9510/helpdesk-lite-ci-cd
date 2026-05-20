@@ -1,38 +1,42 @@
-using HelpDeskLite.Data;
-using Microsoft.EntityFrameworkCore;
+using HelpDeskLite.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agrega Razor Pages
 builder.Services.AddRazorPages();
 
-// Configura la conexión a SQL Server
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSingleton<TicketService>();
 
 var app = builder.Build();
 
-// Configuración del entorno
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
-// Configuración de seguridad y rutas
 app.UseHttpsRedirection();
 
 app.UseRouting();
 
 app.UseAuthorization();
 
-// Archivos estáticos y Razor Pages
 app.MapStaticAssets();
 
 app.MapRazorPages()
    .WithStaticAssets();
 
-// Endpoint de prueba para validar que la app funciona
-app.MapGet("/health", () => "Aplicación HelpDesk Lite funcionando correctamente");
+app.MapGet("/health", () => "Aplicación HelpDeskLite funcionando correctamente");
+
+app.MapGet("/api/tickets", (TicketService ticketService) =>
+{
+    return Results.Ok(ticketService.ObtenerTodos());
+});
+
+app.MapGet("/api/tickets/{id:int}", (int id, TicketService ticketService) =>
+{
+    var ticket = ticketService.ObtenerPorId(id);
+
+    return ticket is not null ? Results.Ok(ticket) : Results.NotFound();
+});
 
 app.Run();

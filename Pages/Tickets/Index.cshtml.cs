@@ -1,42 +1,29 @@
-using HelpDeskLite.Data;
 using HelpDeskLite.Models;
+using HelpDeskLite.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace HelpDeskLite.Pages.Tickets
 {
     public class IndexModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly TicketService _ticketService;
 
-        public IndexModel(AppDbContext context)
+        public IndexModel(TicketService ticketService)
         {
-            _context = context;
+            _ticketService = ticketService;
         }
 
         public IList<Ticket> Tickets { get; set; } = new List<Ticket>();
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            Tickets = await _context.Tickets
-                .OrderByDescending(t => t.FechaCreacion)
-                .ToListAsync();
+            Tickets = _ticketService.ObtenerTodos();
         }
 
-        public async Task<IActionResult> OnPostCambiarEstadoAsync(int id, string estado)
+        public IActionResult OnPostCambiarEstado(int id, string estado)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
-
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-
-            ticket.Estado = estado;
-
-            await _context.SaveChangesAsync();
-
+            _ticketService.CambiarEstado(id, estado);
             return RedirectToPage("./Index");
         }
     }

@@ -1,5 +1,5 @@
-using HelpDeskLite.Data;
 using HelpDeskLite.Models;
+using HelpDeskLite.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -7,33 +7,28 @@ namespace HelpDeskLite.Pages.Tickets
 {
     public class CreateModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly TicketService _ticketService;
 
-        public CreateModel(AppDbContext context)
+        public CreateModel(TicketService ticketService)
         {
-            _context = context;
-        }
-
-        public IActionResult OnGet()
-        {
-            return Page();
+            _ticketService = ticketService;
         }
 
         [BindProperty]
         public Ticket Ticket { get; set; } = new Ticket();
 
-        public async Task<IActionResult> OnPostAsync()
+        public void OnGet()
+        {
+        }
+
+        public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            Ticket.FechaCreacion = DateTime.Now;
-            Ticket.Estado = "Abierto";
-
-            _context.Tickets.Add(Ticket);
-            await _context.SaveChangesAsync();
+            _ticketService.Crear(Ticket);
 
             return RedirectToPage("./Index");
         }

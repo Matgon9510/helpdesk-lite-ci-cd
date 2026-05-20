@@ -1,16 +1,15 @@
-using HelpDeskLite.Data;
+using HelpDeskLite.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace HelpDeskLite.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly TicketService _ticketService;
 
-        public IndexModel(AppDbContext context)
+        public IndexModel(TicketService ticketService)
         {
-            _context = context;
+            _ticketService = ticketService;
         }
 
         public int TotalTickets { get; set; }
@@ -18,12 +17,12 @@ namespace HelpDeskLite.Pages
         public int TicketsEnProceso { get; set; }
         public int TicketsCerrados { get; set; }
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            TotalTickets = await _context.Tickets.CountAsync();
-            TicketsAbiertos = await _context.Tickets.CountAsync(t => t.Estado == "Abierto");
-            TicketsEnProceso = await _context.Tickets.CountAsync(t => t.Estado == "En proceso");
-            TicketsCerrados = await _context.Tickets.CountAsync(t => t.Estado == "Cerrado");
+            TotalTickets = _ticketService.TotalTickets();
+            TicketsAbiertos = _ticketService.TicketsAbiertos();
+            TicketsEnProceso = _ticketService.TicketsEnProceso();
+            TicketsCerrados = _ticketService.TicketsCerrados();
         }
     }
 }

@@ -1,31 +1,30 @@
-using HelpDeskLite.Data;
 using HelpDeskLite.Models;
+using HelpDeskLite.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace HelpDeskLite.Pages.Tickets
 {
     public class DeleteModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly TicketService _ticketService;
 
-        public DeleteModel(AppDbContext context)
+        public DeleteModel(TicketService ticketService)
         {
-            _context = context;
+            _ticketService = ticketService;
         }
 
         [BindProperty]
         public Ticket Ticket { get; set; } = new Ticket();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public IActionResult OnGet(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
+            var ticket = _ticketService.ObtenerPorId(id.Value);
 
             if (ticket == null)
             {
@@ -37,17 +36,9 @@ namespace HelpDeskLite.Pages.Tickets
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPost()
         {
-            var ticket = await _context.Tickets.FindAsync(Ticket.Id);
-
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-
-            _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
+            _ticketService.Eliminar(Ticket.Id);
 
             return RedirectToPage("./Index");
         }

@@ -1,31 +1,30 @@
-using HelpDeskLite.Data;
 using HelpDeskLite.Models;
+using HelpDeskLite.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace HelpDeskLite.Pages.Tickets
 {
     public class EditModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly TicketService _ticketService;
 
-        public EditModel(AppDbContext context)
+        public EditModel(TicketService ticketService)
         {
-            _context = context;
+            _ticketService = ticketService;
         }
 
         [BindProperty]
         public Ticket Ticket { get; set; } = new Ticket();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public IActionResult OnGet(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
+            var ticket = _ticketService.ObtenerPorId(id.Value);
 
             if (ticket == null)
             {
@@ -37,26 +36,14 @@ namespace HelpDeskLite.Pages.Tickets
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            var ticketDb = await _context.Tickets.FindAsync(Ticket.Id);
-
-            if (ticketDb == null)
-            {
-                return NotFound();
-            }
-
-            ticketDb.Titulo = Ticket.Titulo;
-            ticketDb.Descripcion = Ticket.Descripcion;
-            ticketDb.Prioridad = Ticket.Prioridad;
-            ticketDb.Estado = Ticket.Estado;
-
-            await _context.SaveChangesAsync();
+            _ticketService.Actualizar(Ticket);
 
             return RedirectToPage("./Index");
         }
