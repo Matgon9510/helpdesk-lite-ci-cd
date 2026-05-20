@@ -3,3 +3,9 @@ obj/
 .vs/
 *.user
 *.suo
+
+# Visual Studio publish profiles
+Properties/PublishProfiles/
+Properties/ServiceDependencies/
+*.pubxml
+*.pubxml.user
