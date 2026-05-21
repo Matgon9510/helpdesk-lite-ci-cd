@@ -6,35 +6,67 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  webAppName: 'helpdesklite20260520'
+  azureSubscription: 'Azure for Students'
 
-steps:
-- task: UseDotNet@2
-  displayName: 'Instalar .NET SDK 9'
-  inputs:
-    packageType: 'sdk'
-    version: '9.x'
+stages:
+- stage: Build
+  displayName: 'Integración Continua CI'
+  jobs:
+  - job: Build
+    displayName: 'Compilar y generar artefacto'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Instalar .NET SDK 9'
+      inputs:
+        packageType: 'sdk'
+        version: '9.x'
 
-- script: dotnet restore
-  displayName: 'Restaurar dependencias'
+    - script: dotnet restore
+      displayName: 'Restaurar dependencias'
 
-- script: dotnet build --configuration $(buildConfiguration) --no-restore
-  displayName: 'Compilar aplicación'
+    - script: dotnet build --configuration $(buildConfiguration) --no-restore
+      displayName: 'Compilar aplicación'
 
-- script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish
-  displayName: 'Publicar aplicación'
+    - script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish
+      displayName: 'Publicar aplicación'
 
-- task: ArchiveFiles@2
-  displayName: 'Comprimir aplicación publicada'
-  inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/publish'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/HelpDeskLite.zip'
-    replaceExistingArchive: true
+    - task: ArchiveFiles@2
+      displayName: 'Comprimir aplicación publicada'
+      inputs:
+        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/publish'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/HelpDeskLite.zip'
+        replaceExistingArchive: true
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publicar artefacto'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/HelpDeskLite.zip'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publicar artefacto drop'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/HelpDeskLite.zip'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+
+- stage: Deploy
+  displayName: 'Entrega Continua CD'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - job: Deploy
+    displayName: 'Desplegar en Azure App Service'
+    steps:
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Descargar artefacto drop'
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'drop'
+        downloadPath: '$(System.ArtifactsDirectory)'
+
+    - task: AzureWebApp@1
+      displayName: 'Deploy a Azure App Service'
+      inputs:
+        azureSubscription: '$(azureSubscription)'
+        appType: 'webApp'
+        appName: '$(webAppName)'
+        package: '$(System.ArtifactsDirectory)/drop/HelpDeskLite.zip'
