@@ -1,11 +1,11 @@
 ## Integrantes
 
 | Nombre completo | Participación |
-|---|---|
-| Mateo González Escudero | Desarrollo de la aplicación, configuración de GitHub, Azure DevOps, CI/CD, despliegue en Azure App Service y documentación técnica |
-| Juan David Álvarez Ramírez | Apoyo en validación funcional, pruebas de la aplicación y revisión de evidencias |
-| Jessica Johanna Obando García | Apoyo en documentación, revisión del proceso y preparación de evidencias |
-| Lukas Jiménez Bueno | Apoyo en pruebas, validación del despliegue y revisión de videos |
+|---|
+| Mateo González Escudero 
+| Juan David Álvarez Ramírez 
+| Jessica Johanna Obando García
+| Lukas Jiménez Bueno
 
 # HelpDeskLite - Integración Continua CI y Entrega Continua CD
 
