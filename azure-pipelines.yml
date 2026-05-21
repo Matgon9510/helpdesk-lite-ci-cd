@@ -7,7 +7,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
   webAppName: 'helpdesklite20260520'
-  azureSubscription: 'Azure for Students'
+  azureSubscription: 'sc-azure-helpdesklite'
 
 stages:
 - stage: Build
