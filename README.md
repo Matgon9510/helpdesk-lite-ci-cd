@@ -1,11 +1,9 @@
 ## Integrantes
 
-| Nombre completo | Participación |
-|---|
-| Mateo González Escudero 
-| Juan David Álvarez Ramírez 
-| Jessica Johanna Obando García
-| Lukas Jiménez Bueno
+- Mateo González Escudero
+- Juan David Álvarez Ramírez
+- Jessica Johanna Obando García
+- Lukas Jiménez Bueno
 
 # HelpDeskLite - Integración Continua CI y Entrega Continua CD
 
