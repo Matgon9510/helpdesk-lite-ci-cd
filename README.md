@@ -1,10 +1,30 @@
+# HelpDeskLite - Integración Continua CI y Entrega Continua CD
+
 ## Integrantes
 
-- Mateo González Escudero
-- Juan David Álvarez Ramírez
-- Jessica Johanna Obando García
-- Lukas Jiménez Bueno
+| Nombre completo |
+|---|
+| Mateo González Escudero |
+| Juan David Álvarez Ramírez |
+| Jessica Johanna Obando García |
+| Lukas Jiménez Bueno |
 
+---
+
+## Videos de evidencia
+
+Los videos de sustentación del proyecto se encuentran disponibles en el siguiente enlace:
+
+[Ver videos de evidencia CI/CD en SharePoint](https://correoitmedu-my.sharepoint.com/:f:/g/personal/mateogonzalez223620_correo_itm_edu_co/IgD5mdqHe5ytRJenpMo-dpkKAV_vwVUblPVhUSCN78bs6Ns?e=vCIBo2)
+
+### Contenido de los videos
+
+| Video | Descripción |
+|---|---|
+| Video 1 - Integración Continua CI | Se evidencia el repositorio en GitHub, el archivo `azure-pipelines.yml`, la ejecución automática del pipeline, la compilación de la aplicación y la generación del artefacto `drop`. |
+| Video 2 - Entrega Continua CD | Se evidencia el despliegue automático hacia Azure App Service, la ejecución de la etapa CD y la validación de la aplicación publicada en Azure. |
+
+---
 # HelpDeskLite - Integración Continua CI y Entrega Continua CD
 
 ## 1. Descripción general
